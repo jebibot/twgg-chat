@@ -162,7 +162,7 @@ ${JSON.stringify(body, null, 2)}`
   async callApi<T>(path: string) {
     return this.getWithRetry<T>(`${API_URL}${path}`, {
       Accept: "application/vnd.twitchtv.v5+json",
-      "Client-ID": process.env.REACT_APP_TWITCH_CLIENT_ID ?? "",
+      "Client-ID": "kimne78kx3ncx6brgo4mv6wki5h1ko",
     });
   }
 

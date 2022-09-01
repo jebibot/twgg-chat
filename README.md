@@ -4,7 +4,6 @@
 
 ## Environment
 
-- `REACT_APP_TWITCH_CLIENT_ID`: [Twitch Devlopers Console > Applications > Client ID](https://dev.twitch.tv/console/apps)
 - `REACT_APP_SENTRY_DSN` (optional): [Settings > Projects > Client Keys](https://sentry.io/)
 
 ## Development
