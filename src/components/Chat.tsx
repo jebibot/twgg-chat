@@ -9,9 +9,10 @@ import styles from "./Chat.module.css";
 
 type ChatProps = {
   chat: ChatEntry;
+  dark: boolean;
 };
 
-function Chat({ chat }: ChatProps) {
+function Chat({ chat, dark }: ChatProps) {
   const appDispatch = useContext(AppDispatch);
   return (
     <div className="px-3 py-2">
@@ -28,7 +29,9 @@ function Chat({ chat }: ChatProps) {
           <ChatBadge key={b._id} badge={b}></ChatBadge>
         ))}
       </span>
-      <span style={{ color: chat.color } as CSS.Properties}>
+      <span
+        style={{ color: dark ? chat.darkColor : chat.color } as CSS.Properties}
+      >
         <span className="font-weight-bold">{chat.display_name}</span>
         {chat.display_name.toLowerCase() !== chat.name && (
           <span className={styles.username}> ({chat.name})</span>

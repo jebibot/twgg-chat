@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef, createContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faDownload,
+  faInfoCircle,
+  faCircleHalfStroke,
+} from "@fortawesome/free-solid-svg-icons";
 import * as Sentry from "@sentry/react";
 import ProgressBar from "./ProgressBar";
 import Chat from "./Chat";
@@ -14,9 +18,11 @@ export const BadgesContext = createContext<BadgeSetsData | undefined>(
 
 type ChatListProps = {
   videoId: string;
+  dark: boolean;
+  toggleDark: () => void;
 };
 
-function ChatList({ videoId }: ChatListProps) {
+function ChatList({ videoId, dark, toggleDark }: ChatListProps) {
   const chatList = useRef<HTMLDivElement>(null);
 
   const [badges, setBadges] = useState<BadgeSetsData>();
@@ -111,11 +117,22 @@ function ChatList({ videoId }: ChatListProps) {
           >
             <FontAwesomeIcon icon={faInfoCircle} />
           </a>
+          <button
+            type="button"
+            className={`btn ${dark ? "btn-light" : "btn-dark"} f-14 ml-1`}
+            aria-label="Toggle the dark mode"
+            title="Toggle the dark mode"
+            onClick={() => {
+              toggleDark();
+            }}
+          >
+            <FontAwesomeIcon icon={faCircleHalfStroke} />
+          </button>
         </div>
       </div>
       <div ref={chatList}>
         {chats.map((chat) => (
-          <Chat key={chat.id} chat={chat}></Chat>
+          <Chat key={chat.id} chat={chat} dark={dark}></Chat>
         ))}
       </div>
     </BadgesContext.Provider>

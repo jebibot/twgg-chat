@@ -12,6 +12,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.dark {
+  background-color: #18181b;
+}
+
 .max-vh-100 {
   max-height: 100vh;
 }
