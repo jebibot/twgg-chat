@@ -96,7 +96,7 @@ function ChatList({ videoId, dark, toggleDark }: ChatListProps) {
             title="Download as an image"
             onClick={() => {
               if (!chatList.current) return;
-              captureToPng(chatList.current, `chat-${videoId}.png`);
+              captureToPng(chatList.current, dark, `chat-${videoId}.png`);
             }}
           >
             <FontAwesomeIcon icon={faDownload} />
