@@ -4,8 +4,16 @@
   font-variant-numeric: tabular-nums;
 }
 
-.dark .timestamp {
+:global(.dark) .timestamp {
   color: #adadb8;
+}
+
+.author {
+  color: #5c16c5;
+}
+
+:global(.dark) .author {
+  color: #bf94ff;
 }
 
 .username {
@@ -16,6 +24,6 @@
   color: #1f1f23;
 }
 
-.dark .message {
+:global(.dark) .message {
   color: #dedee3;
 }

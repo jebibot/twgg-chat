@@ -30,6 +30,7 @@ function Chat({ chat, dark }: ChatProps) {
         ))}
       </span>
       <span
+        className={styles.author}
         style={{ color: dark ? chat.darkColor : chat.color } as CSS.Properties}
       >
         <span className="font-weight-bold">{chat.display_name}</span>
