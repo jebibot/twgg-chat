@@ -19,10 +19,11 @@ export const BadgesContext = createContext<BadgeSetsData | undefined>(
 type ChatListProps = {
   videoId: string;
   dark: boolean;
+  setTime: (time: number) => void;
   toggleDark: () => void;
 };
 
-function ChatList({ videoId, dark, toggleDark }: ChatListProps) {
+function ChatList({ videoId, dark, setTime, toggleDark }: ChatListProps) {
   const chatList = useRef<HTMLDivElement>(null);
 
   const [badges, setBadges] = useState<BadgeSetsData>();
@@ -132,7 +133,7 @@ function ChatList({ videoId, dark, toggleDark }: ChatListProps) {
       </div>
       <div ref={chatList}>
         {chats.map((chat) => (
-          <Chat key={chat.id} chat={chat} dark={dark}></Chat>
+          <Chat key={chat.id} chat={chat} dark={dark} setTime={setTime}></Chat>
         ))}
       </div>
     </BadgesContext.Provider>

@@ -1,8 +1,6 @@
-import { useContext } from "react";
 import * as CSS from "csstype";
 import ChatBadge from "./ChatBadge";
 import ChatEmoticon from "./ChatEmoticon";
-import { AppDispatch } from "../App";
 import { ChatEntry } from "../utils/chats";
 import { formatTimestamp } from "../utils/utils";
 import styles from "./Chat.module.css";
@@ -10,17 +8,17 @@ import styles from "./Chat.module.css";
 type ChatProps = {
   chat: ChatEntry;
   dark: boolean;
+  setTime: (time: number) => void;
 };
 
-function Chat({ chat, dark }: ChatProps) {
-  const appDispatch = useContext(AppDispatch);
+function Chat({ chat, dark, setTime }: ChatProps) {
   return (
     <div className="px-3 py-2">
       <span
         className={`${styles.timestamp} mr-2`}
-        onClick={() =>
-          appDispatch?.({ type: "seek", timestamp: chat.timestamp })
-        }
+        onClick={() => {
+          setTime(chat.timestamp);
+        }}
       >
         {formatTimestamp(chat.timestamp)}
       </span>
