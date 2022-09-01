@@ -4,21 +4,25 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.36",
-    "@fortawesome/free-solid-svg-icons": "^5.15.4",
-    "@fortawesome/react-fontawesome": "^0.1.17",
-    "@sentry/react": "^6.17.5",
-    "@sentry/tracing": "^6.17.5",
-    "@types/jest": "^27.4.0",
-    "@types/node": "^12.20.17",
-    "@types/react": "^17.0.39",
-    "@types/react-dom": "^17.0.11",
+    "@fortawesome/fontawesome-svg-core": "^6.2.0",
+    "@fortawesome/free-solid-svg-icons": "^6.2.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@sentry/react": "^7.12.0",
+    "@sentry/tracing": "^7.12.0",
+    "@types/jest": "^29.0.0",
+    "@types/node": "^16.11.56",
+    "@types/react": "^18.0.18",
+    "@types/react-dom": "^18.0.6",
     "html2canvas": "^1.4.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "5.0.0",
-    "react-twitch-embed": "^2.1.0",
-    "typescript": "^4.5.5"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "react-twitch-embed": "^3.0.1",
+    "typescript": "^4.8.2"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1",
+    "source-map-explorer": "^2.5.2"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
@@ -48,9 +52,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "prettier": "^2.5.1",
-    "source-map-explorer": "^2.5.2"
   }
 }
