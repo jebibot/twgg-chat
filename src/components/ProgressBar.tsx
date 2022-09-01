@@ -11,7 +11,7 @@ function ProgressBar({ error, progress }: ProgressBarProps) {
   let message;
   if (error) {
     className = " bg-danger";
-    message = error;
+    message = "Error";
   } else if (progress[0] === "-") {
     return null;
   } else if (progress === "100.00") {
@@ -31,7 +31,7 @@ function ProgressBar({ error, progress }: ProgressBarProps) {
         aria-valuenow={Number(progress)}
         aria-valuemin={0}
         aria-valuemax={100}
-        title={message}
+        title={error || message}
       >
         {message}
       </div>
