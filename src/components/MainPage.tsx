@@ -1,7 +1,7 @@
 function MainPage() {
   return (
     <div className="jumbotron f-16 mt-3">
-      <h1 className="display-3">Twitch Rechat</h1>
+      <h1 className="display-3">TTV Rechat</h1>
       <div className="col-12 border border-primary rounded-pill shadow py-2 mt-3">
         https://www.twitch<strong>gg</strong>.tv/videos/12345678
       </div>
