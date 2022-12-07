@@ -23,7 +23,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-const API_URL = "https://api.twitch.tv/kraken/";
+const GRAPHQL_API_URL = "https://gql.twitch.tv/gql";
 const API_WORKER_URL = "https://api.twgg.workers.dev/";
 const BADGES_API_URL = "https://badges.twitch.tv/v1/badges/";
 
@@ -36,66 +36,87 @@ type VideoData = {
 };
 type Videos = { [id: string]: VideoData };
 
-type CommenterData = {
-  _id: string;
-  bio: string | null;
-  created_at: string;
-  display_name: string;
-  logo: string;
-  name: string;
-  type: string;
-  updated_at: string;
+type User = {
+  displayName: string;
+  id: string;
+  login: string;
+  __typename: "User";
 };
 
-type EmoticonData = {
-  _id: string;
-  begin: number;
-  end: number;
+type EmbeddedEmote = {
+  emoteID: string;
+  from: number;
+  id: string;
+  __typename: "EmbeddedEmote";
 };
 
-type EmoticonFragmentData = {
-  emoticon_id: string;
-  emoticon_set_id: string;
-};
-
-export type FragmentData = {
+export type VideoCommentMessageFragment = {
+  emote: EmbeddedEmote | null;
   text: string;
-  emoticon?: EmoticonFragmentData;
+  __typename: "VideoCommentMessageFragment";
 };
 
-export type BadgeData = {
-  _id: string;
+export type Badge = {
+  id: string;
+  setID: string;
   version: string;
+  __typename: "Badge";
 };
 
-type MessageData = {
-  body: string;
-  emoticons?: EmoticonData[];
-  fragments?: FragmentData[];
-  is_action: boolean;
-  user_badges?: BadgeData[];
-  user_color?: string;
-  user_notice_params: any;
+type VideoCommentMessage = {
+  fragments: VideoCommentMessageFragment[];
+  userBadges: Badge[];
+  userColor: string | null;
+  __typename: "VideoCommentMessage";
 };
 
-export type CommentData = {
-  _id: string;
-  channel_id: string;
-  commenter: CommenterData;
-  content_id: string;
-  content_offset_seconds: number;
-  content_type: string;
-  created_at: string;
-  message: MessageData;
-  source: string;
-  state: string;
-  updated_at: string;
+type VideoComment = {
+  commenter: User | null;
+  contentOffsetSeconds: number;
+  createdAt: string;
+  id: string;
+  message: VideoCommentMessage;
+  __typename: "VideoComment";
 };
 
-export type CommentsData = {
-  comments?: CommentData[];
-  _next?: string;
-  _prev?: string;
+export type VideoCommentEdge = {
+  cursor: string;
+  node: VideoComment;
+  __typename: "VideoCommentEdge";
+};
+
+type PageInfo = {
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  __typename: "PageInfo";
+};
+
+type VideoCommentConnection = {
+  edges: VideoCommentEdge[];
+  pageInfo: PageInfo;
+  __typename: "VideoCommentConnection";
+};
+
+type Video = {
+  comments: VideoCommentConnection;
+  creator: User;
+  id: string;
+  __typename: "Video";
+};
+
+type CommentsData = {
+  video: Video;
+};
+
+type ExtensionsData = {
+  durationMilliseconds: number;
+  operationName: string;
+  requestID: string;
+};
+
+export type CommentsResponse = {
+  data: CommentsData;
+  extensions: ExtensionsData;
 };
 
 type BadgeVersionData = {
@@ -127,13 +148,12 @@ class Twitch {
     this.keepalive = true;
   }
 
-  async getWithRetry<T>(input: RequestInfo, headers?: Record<string, string>) {
+  async fetchWithRetry<T>(input: RequestInfo, init: RequestInit) {
     let body;
     for (let i = 0; i < MAX_RETRIES; i++) {
       try {
         const res = await fetch(input, {
-          method: "GET",
-          headers,
+          ...init,
           keepalive: this.keepalive,
           signal: this.signal,
         });
@@ -159,10 +179,17 @@ ${JSON.stringify(body, null, 2)}`
     return body as T;
   }
 
-  async callApi<T>(path: string) {
-    return this.getWithRetry<T>(`${API_URL}${path}`, {
-      Accept: "application/vnd.twitchtv.v5+json",
-      "Client-ID": "kimne78kx3ncx6brgo4mv6wki5h1ko",
+  async getWithRetry<T>(input: RequestInfo, headers?: Record<string, string>) {
+    return this.fetchWithRetry<T>(input, { method: "GET", headers });
+  }
+
+  async callGraphQLApi<T>(body: any) {
+    return this.fetchWithRetry<T>(GRAPHQL_API_URL, {
+      method: "POST",
+      headers: {
+        "Client-ID": "kimne78kx3ncx6brgo4mv6wki5h1ko",
+      },
+      body: JSON.stringify(body),
     });
   }
 
@@ -179,21 +206,35 @@ ${JSON.stringify(body, null, 2)}`
     return result[videoId];
   }
 
-  async getComments(videoId: string, cursor: string) {
-    return this.callApi<CommentsData>(
-      `videos/${videoId}/comments?${
-        cursor ? `cursor=${cursor}` : "content_offset_seconds=0"
-      }`
-    );
+  async getComments(videoID: string, cursor: string | undefined) {
+    return (
+      await this.callGraphQLApi<[CommentsResponse]>([
+        {
+          operationName: "VideoCommentsByOffsetOrCursor",
+          variables: {
+            videoID,
+            ...(cursor ? { cursor } : { contentOffsetSeconds: 0 }),
+          },
+          extensions: {
+            persistedQuery: {
+              version: 1,
+              sha256Hash:
+                "b70a3591ff0f4e0313d126c6a1502d79a1c02baebb288227c582044aa76adf6a",
+            },
+          },
+        },
+      ])
+    )[0];
   }
 
   async *iterateComments(videoId: string) {
-    let next: string | undefined = "";
-    while (next != null) {
-      const result: CommentsData = await this.getComments(videoId, next);
-      yield result.comments;
-      next = result._next;
-    }
+    let cursor: string | undefined;
+    do {
+      const result: CommentsResponse = await this.getComments(videoId, cursor);
+      const edges = result.data.video.comments.edges;
+      yield edges;
+      cursor = edges[0]?.cursor;
+    } while (cursor);
   }
 
   async getGlobalBadges() {

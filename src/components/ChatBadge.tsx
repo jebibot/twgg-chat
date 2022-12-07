@@ -1,15 +1,15 @@
 import { useContext } from "react";
 import { BadgesContext } from "./ChatList";
-import { BadgeData } from "../api/Twitch";
+import { Badge } from "../api/Twitch";
 import styles from "./ChatBadge.module.css";
 
 type ChatBadgeProps = {
-  badge: BadgeData;
+  badge: Badge;
 };
 
 function ChatBadge({ badge }: ChatBadgeProps) {
   const badges = useContext(BadgesContext);
-  const b = badges?.[badge._id]?.versions[badge.version];
+  const b = badges?.[badge.setID]?.versions[badge.version];
   if (!b) return null;
 
   return (

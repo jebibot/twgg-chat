@@ -1,4 +1,8 @@
-import { CommentData, BadgeData, FragmentData } from "../api/Twitch";
+import {
+  VideoCommentEdge,
+  Badge,
+  VideoCommentMessageFragment,
+} from "../api/Twitch";
 import { ColorAdjuster } from "./color";
 
 const BOTS = [
@@ -19,30 +23,29 @@ export type ChatEntry = {
   name: string;
   color: string | null;
   darkColor: string | null;
-  badges: BadgeData[] | undefined;
-  message: FragmentData[];
+  badges: Badge[];
+  message: VideoCommentMessageFragment[];
 };
 
 const colorAdjuster = new ColorAdjuster("#ffffff", 1);
 const darkColorAdjuster = new ColorAdjuster("#181818", 1);
 
-async function getChats(comments: CommentData[]): Promise<ChatEntry[]> {
+async function getChats(comments: VideoCommentEdge[]): Promise<ChatEntry[]> {
   return comments.map((c) => ({
-    id: c._id,
-    timestamp: c.content_offset_seconds,
-    display_name: c.commenter.display_name,
-    name: c.commenter.name,
-    color: colorAdjuster.process(c.message.user_color),
-    darkColor: darkColorAdjuster.process(c.message.user_color),
-    badges: c.message.user_badges,
-    message: c.message.fragments ?? [{ text: c.message.body }],
+    id: c.node.id,
+    timestamp: c.node.contentOffsetSeconds,
+    display_name: c.node.commenter?.displayName || "",
+    name: c.node.commenter?.login || "",
+    color: colorAdjuster.process(c.node.message.userColor),
+    darkColor: darkColorAdjuster.process(c.node.message.userColor),
+    badges: c.node.message.userBadges,
+    message: c.node.message.fragments,
   }));
 }
 
 export function isStreamer(c: ChatEntry) {
   return (
-    !!c.badges &&
-    c.badges.some((b) => BADGES.includes(b._id)) &&
+    c.badges.some((b) => BADGES.includes(b.setID)) &&
     !c.name.endsWith("bot") &&
     !BOTS.includes(c.name)
   );

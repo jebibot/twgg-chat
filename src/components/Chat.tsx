@@ -23,8 +23,8 @@ function Chat({ chat, dark, setTime }: ChatProps) {
         {formatTimestamp(chat.timestamp)}
       </span>
       <span>
-        {chat.badges?.map((b) => (
-          <ChatBadge key={b._id} badge={b}></ChatBadge>
+        {chat.badges.map((b) => (
+          <ChatBadge key={b.id} badge={b}></ChatBadge>
         ))}
       </span>
       <span
@@ -39,10 +39,10 @@ function Chat({ chat, dark, setTime }: ChatProps) {
       <span aria-hidden="true">: </span>
       <span className={styles.message}>
         {chat.message.map((m, i) =>
-          m.emoticon ? (
+          m.emote ? (
             <ChatEmoticon
               key={i}
-              emoticonId={m.emoticon.emoticon_id}
+              emoticonId={m.emote.emoteID}
               name={m.text}
             ></ChatEmoticon>
           ) : (
