@@ -194,6 +194,7 @@ ${JSON.stringify(body, null, 2)}`
   }
 
   async callBadgesApi<T>(path: string) {
+    // [{"operationName":"ChatList_Badges","variables":{"channelLogin":},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"86f43113c04606e6476e39dcd432dee47c994d77a83e54b732e11d4935f0cd08"}}}]
     return this.getWithRetry<T>(`${BADGES_API_URL}${path}`, {
       Accept: "application/json",
     });
