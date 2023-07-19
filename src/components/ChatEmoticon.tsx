@@ -14,7 +14,7 @@ function ChatEmoticon({ emoticonId, name }: ChatEmoticonProps) {
       src={`${EMOTICON_URL(emoticonId, 1)}`}
       srcSet={`${EMOTICON_URL(emoticonId, 1)} 1x, ${EMOTICON_URL(
         emoticonId,
-        2
+        2,
       )} 2x, ${EMOTICON_URL(emoticonId, 3)} 4x`}
       alt={name}
       className={`${styles.emoticon} my-n1 align-middle`}

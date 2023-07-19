@@ -162,7 +162,7 @@ class Twitch {
           throw new Error(
             `HTTP ${res.status}: ${res.statusText}
   
-${JSON.stringify(body, null, 2)}`
+${JSON.stringify(body, null, 2)}`,
           );
         }
         break;
@@ -202,7 +202,7 @@ ${JSON.stringify(body, null, 2)}`
 
   async getVideoDuration(videoId: string) {
     const result = await this.getWithRetry<Videos>(
-      `${API_WORKER_URL}videos?id=${videoId}`
+      `${API_WORKER_URL}videos?id=${videoId}`,
     );
     return result[videoId];
   }
@@ -246,7 +246,7 @@ ${JSON.stringify(body, null, 2)}`
   async getChannelBadges(channelId: string) {
     const globalBadgeSets = await this.getGlobalBadges();
     const channelBadges = await this.callBadgesApi<BadgesData>(
-      `channels/${channelId}/display`
+      `channels/${channelId}/display`,
     );
     return Object.assign(globalBadgeSets, channelBadges.badge_sets);
   }

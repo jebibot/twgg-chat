@@ -3,7 +3,7 @@ import html2canvas from "html2canvas";
 export default async function captureToPng(
   element: HTMLElement,
   dark: boolean,
-  filename: string
+  filename: string,
 ) {
   const canvas = await html2canvas(element, {
     useCORS: true,

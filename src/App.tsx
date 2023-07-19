@@ -5,7 +5,7 @@ import TwitchVODPlayer from "./components/TwitchVODPlayer";
 
 function App() {
   const videoId = window.location.pathname.match(
-    /^\/(?:[^/]+\/v(?:ideo)?|videos)\/(\d+)/
+    /^\/(?:[^/]+\/v(?:ideo)?|videos)\/(\d+)/,
   )?.[1];
   const [time, setTime] = useState(0);
   const [dark, setDark] = useState(false);

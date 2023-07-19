@@ -47,7 +47,7 @@ function Chat({ chat, dark, setTime }: ChatProps) {
             ></ChatEmoticon>
           ) : (
             <span key={i}>{m.text}</span>
-          )
+          ),
         )}
       </span>
     </div>
