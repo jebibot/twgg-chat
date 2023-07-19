@@ -13,7 +13,7 @@ import getChats, { ChatEntry, isStreamer } from "../utils/chats";
 import captureToPng from "../utils/html2canvas";
 
 export const BadgesContext = createContext<BadgeSetsData | undefined>(
-  undefined
+  undefined,
 );
 
 type ChatListProps = {
@@ -57,7 +57,7 @@ function ChatList({ videoId, dark, setTime, toggleDark }: ChatListProps) {
           setVideoLength(
             3600 * parseInt(match[1] || "0") +
               60 * parseInt(match[2] || "0") +
-              parseInt(match[3] || "0")
+              parseInt(match[3] || "0"),
           );
         }
         setBadges(await twitch.getChannelBadges(video.userId));
