@@ -1748,7 +1748,7 @@
     "@sentry/utils" "7.64.0"
     tslib "^2.4.1 || ^1.9.3"
 
-"@sentry/react@^7.60.1":
+"@sentry/react@^7.64.0":
   version "7.64.0"
   resolved "https://registry.yarnpkg.com/@sentry/react/-/react-7.64.0.tgz#edee24ac232990204e0fb43dd83994642d4b0f54"
   integrity sha512-wOyJUQi7OoT1q+F/fVVv1fzbyO4OYbTu6m1DliLOGQPGEHPBsgPc722smPIExd1/rAMK/FxOuNN5oNhubH8nhg==
@@ -1768,7 +1768,7 @@
     "@sentry/types" "7.64.0"
     "@sentry/utils" "7.64.0"
 
-"@sentry/tracing@^7.60.1":
+"@sentry/tracing@^7.64.0":
   version "7.64.0"
   resolved "https://registry.yarnpkg.com/@sentry/tracing/-/tracing-7.64.0.tgz#994a779d6c8b810b98784b33eb6defd014303913"
   integrity sha512-Php0XnnJolfxkFdgLlgwgRz3bgHmu/7gDRQaGQHJeDgCCjrmNHI+sHi8zmkWCWSO0Z1mi111n2ZUr9B9YLPBTg==
