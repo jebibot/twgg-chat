@@ -21,7 +21,7 @@
     "typescript": "^5.2.2"
   },
   "devDependencies": {
-    "prettier": "^3.0.2",
+    "prettier": "^3.0.3",
     "source-map-explorer": "^2.5.3"
   },
   "scripts": {
