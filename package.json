@@ -9,7 +9,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@sentry/react": "^7.81.0",
     "@sentry/tracing": "^7.81.0",
-    "@types/jest": "^29.5.8",
+    "@types/jest": "^29.5.9",
     "@types/node": "^16.18.62",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
